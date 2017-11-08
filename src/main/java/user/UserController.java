@@ -1,7 +1,5 @@
 package user;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,22 +31,19 @@ public class UserController {
         return String.valueOf(count);
     }
 
+    @GetMapping("/api/hello")
+    public String hello() {
+        return "Hello!";
+    }
+
     @GetMapping("/api/info")
     public String info(Principal principal) {
         return "Current user: " + principal.getName();
     }
 
     @GetMapping("/api/users/{userName}")
-    @PreAuthorize("#userName == authentication.name")
-    public User getUserByName(@PathVariable String userName,
-                              Authentication authentication) {
-
-        System.out.println("userName: " + userName);
-        System.out.println("authentication.name: " + authentication.getName());
-        System.out.println("auth: " + authentication.getAuthorities());
-
+    public User getUserByName(@PathVariable String userName) {
         return new UserDao().getUserByUserName(userName);
     }
-
 
 }

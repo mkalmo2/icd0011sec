@@ -16,7 +16,5 @@ public class RestAuthFailureHandler implements AuthenticationFailureHandler {
                 throws IOException, ServletException {
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            response.getWriter().print(exception.getMessage());
         }
     }
