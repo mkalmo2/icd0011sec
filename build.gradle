@@ -1,0 +1,54 @@
+plugins {
+    id 'org.akhikhl.gretty' version '2.0.0'
+}
+
+apply plugin: 'war'
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def springVersion = '5.0.1.RELEASE'
+def springSecurityVersion = '4.2.3.RELEASE'
+
+dependencies {
+
+    compile group: 'org.springframework.security',
+            name: 'spring-security-web',
+            version: springSecurityVersion
+
+    compile group: 'org.springframework.security',
+            name: 'spring-security-config',
+            version: springSecurityVersion
+
+    compile group: 'org.springframework',
+            name: 'spring-webmvc',
+            version: springVersion
+
+    compile group: 'org.apache.logging.log4j',
+            name: 'log4j-api',
+            version: '2.8.2'
+
+    compile group: 'org.apache.logging.log4j',
+            name: 'log4j-core',
+            version: '2.8.2'
+
+    compile group: 'com.fasterxml.jackson.core',
+            name: 'jackson-databind',
+            version: '2.9.0'
+
+}
+
+task runMain(type: JavaExec) {
+    main = 'util.PasswordEncoder'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+gretty {
+    contextPath = '/'
+    reloadOnClassChange = false
+    debugSuspend = false
+}
