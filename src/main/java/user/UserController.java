@@ -1,9 +1,12 @@
 package user;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
@@ -20,11 +23,9 @@ public class UserController {
 
         Object count = session.getAttribute("count");
 
-        if (count != null && count instanceof Integer) {
-            count = (Integer) count + 1;
-        } else {
-            count = 0;
-        }
+        count = count instanceof Integer
+                ? (Integer) count + 1
+                : 0;
 
         session.setAttribute("count", count);
 
@@ -42,6 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users/{userName}")
+    @PreAuthorize("#userName == authentication.name")
     public User getUserByName(@PathVariable String userName) {
         return new UserDao().getUserByUserName(userName);
     }

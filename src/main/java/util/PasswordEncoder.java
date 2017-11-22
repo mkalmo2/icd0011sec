@@ -8,7 +8,7 @@ public class PasswordEncoder {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
-        System.out.println(encoder.encode("secret"));
+        System.out.println(encoder.encode("password"));
     }
 
 }

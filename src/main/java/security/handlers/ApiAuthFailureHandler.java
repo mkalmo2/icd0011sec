@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RestAuthFailureHandler implements AuthenticationFailureHandler {
+public class ApiAuthFailureHandler implements AuthenticationFailureHandler {
         @Override
         public void onAuthenticationFailure(HttpServletRequest request,
                                             HttpServletResponse response,

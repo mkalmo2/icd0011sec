@@ -1,5 +1,7 @@
 package security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -10,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RestAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class ApiAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    public RestAuthenticationFilter(String defaultFilterProcessesUrl) {
+    public ApiAuthenticationFilter(String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
     }
 
@@ -21,13 +23,13 @@ public class RestAuthenticationFilter extends AbstractAuthenticationProcessingFi
                                                 HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
 
-        LoginCredentials loginCredentials = null;
-
-        // Read info from HttpServletRequest.
-
-        // Use ObjectMapper to convert Json to LoginCredentials object.
-
-        // Info from LoginCredentials is used below.
+        LoginCredentials loginCredentials;
+        try {
+            loginCredentials = new ObjectMapper().readValue(
+                        request.getInputStream(), LoginCredentials.class);
+        } catch (Exception e) {
+            throw new BadCredentialsException("");
+        }
 
         UsernamePasswordAuthenticationToken authRequest =
                 new UsernamePasswordAuthenticationToken(
