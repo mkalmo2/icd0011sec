@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    public Filter restLoginFilter(String url) throws Exception {
+    public Filter apiLoginFilter(String url) throws Exception {
         ApiAuthenticationFilter filter = new ApiAuthenticationFilter(url);
 
         filter.setAuthenticationManager(authenticationManager());
