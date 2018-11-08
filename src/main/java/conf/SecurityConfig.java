@@ -23,13 +23,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
 
-        // other configurations
+        http.authorizeRequests()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/logout").permitAll()
+                .antMatchers("/api/**").hasAnyRole("USER")
+                .antMatchers("/**").permitAll();
+
+        http.exceptionHandling().authenticationEntryPoint(new ApiEntryPoint());
+        http.exceptionHandling().accessDeniedHandler(new ApiAccessDeniedHandler());
+
+        http.logout()
+                .logoutUrl("/api/logout")
+                .logoutSuccessHandler(new ApiLogoutSuccessHandler());
+
+        http.addFilterAfter(apiLoginFilter("/api/login"), LogoutFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
 
-        // configure user and password info
+        builder.inMemoryAuthentication()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .withUser("user")
+                .password("$2a$10$fePEVsB48us3cscETLHd6.Sf6XHz9OC.pbhxPNvtiY1iSZBx4gIfq")
+                .roles("USER");
 
     }
 
@@ -37,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ApiAuthenticationFilter filter = new ApiAuthenticationFilter(url);
 
         filter.setAuthenticationManager(authenticationManager());
-
-        // add success and failure handlers
+        filter.setAuthenticationSuccessHandler(new ApiAuthSuccessHandler());
+        filter.setAuthenticationFailureHandler(new ApiAuthFailureHandler());
 
         return filter;
     }
