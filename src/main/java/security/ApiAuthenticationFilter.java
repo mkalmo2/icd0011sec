@@ -23,13 +23,13 @@ public class ApiAuthenticationFilter extends AbstractAuthenticationProcessingFil
                                                 HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
 
-        LoginCredentials loginCredentials;
-        try {
-            loginCredentials = new ObjectMapper().readValue(
-                        request.getInputStream(), LoginCredentials.class);
-        } catch (Exception e) {
-            throw new BadCredentialsException("");
-        }
+        LoginCredentials loginCredentials = null;
+
+        // Read info from HttpServletRequest.
+
+        // Use ObjectMapper to convert Json to LoginCredentials object.
+
+        // Info from LoginCredentials is used below.
 
         UsernamePasswordAuthenticationToken authRequest =
                 new UsernamePasswordAuthenticationToken(
