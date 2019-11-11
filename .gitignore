@@ -1,11 +1,7 @@
-/target
 /build
 /out
 
 /.gradle
-/.settings
-/.classpath
-/.project
 /.idea
 
 *.iml

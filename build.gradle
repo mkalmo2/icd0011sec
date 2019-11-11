@@ -1,5 +1,5 @@
 plugins {
-    id 'org.gretty' version '2.2.0'
+    id 'org.gretty' version '2.3.1'
     id 'war'
 }
 
@@ -7,31 +7,76 @@ repositories {
     jcenter()
 }
 
-sourceCompatibility = 8
+sourceCompatibility = 11
 
-def springVersion = '5.1.0.RELEASE'
-def springSecurityVersion = '5.1.1.RELEASE'
+def springVersion = '5.2.1.RELEASE'
+def jacksonVersion = '2.10.0'
+def log4jVersion = '2.12.1'
+def lombokVersion = '1.18.10'
+def jsonWebTokenVersion = '0.10.7'
+def junitVersion = '4.12'
 
 dependencies {
-
-    compile group: 'org.springframework.security',
-            name: 'spring-security-web',
-            version: springSecurityVersion
-
-    compile group: 'org.springframework.security',
-            name: 'spring-security-config',
-            version: springSecurityVersion
 
     compile group: 'org.springframework',
             name: 'spring-webmvc',
             version: springVersion
 
+    compile group: 'org.springframework.security',
+            name: 'spring-security-web',
+            version: springVersion
+
+    compile group: 'org.springframework.security',
+            name: 'spring-security-config',
+            version: springVersion
+
     compile group: 'com.fasterxml.jackson.core',
             name: 'jackson-databind',
-            version: '2.9.6'
+            version: jacksonVersion
+
+    compile group: 'org.apache.logging.log4j',
+            name: 'log4j-api',
+            version: log4jVersion
+
+    compile group: 'org.apache.logging.log4j',
+            name: 'log4j-core',
+            version: log4jVersion
+
+    compile group: 'io.jsonwebtoken',
+            name: 'jjwt-api',
+            version: jsonWebTokenVersion
+
+    runtime group: 'io.jsonwebtoken',
+            name: 'jjwt-impl',
+            version: jsonWebTokenVersion
+
+    runtime group: 'io.jsonwebtoken',
+            name: 'jjwt-jackson',
+            version: jsonWebTokenVersion
+
+    compileOnly group: 'org.projectlombok',
+            name: 'lombok',
+            version: lombokVersion
+
+    annotationProcessor group: 'org.projectlombok',
+            name: 'lombok',
+            version: lombokVersion
+
+    testCompile group: 'org.springframework',
+            name: 'spring-test',
+            version: springVersion
+
+    testCompile group: 'org.springframework.security',
+            name: 'spring-security-test',
+            version: springVersion
+
+    testCompile group: 'junit',
+            name: 'junit',
+            version: junitVersion
 
 }
 
 gretty {
     contextPath = '/'
+    servletContainer = 'jetty9.4'
 }

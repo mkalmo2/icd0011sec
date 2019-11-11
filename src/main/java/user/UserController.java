@@ -1,5 +1,6 @@
 package user;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +30,9 @@ public class UserController {
         return String.valueOf(count);
     }
 
-    @GetMapping("/api/hello")
-    public String hello() {
-        return "Hello!";
+    @GetMapping("/api/home")
+    public String home() {
+        return "Api home url";
     }
 
     @GetMapping("/api/info")
@@ -39,7 +40,13 @@ public class UserController {
         return "Current user: " + principal.getName();
     }
 
+    @GetMapping("/api/admin/info")
+    public String adminInfo(Principal principal) {
+        return "Admin user info: " + principal.getName();
+    }
+
     @GetMapping("/api/users/{userName}")
+    @PreAuthorize("#userName == authentication.name")
     public User getUserByName(@PathVariable String userName) {
         return new UserDao().getUserByUserName(userName);
     }
