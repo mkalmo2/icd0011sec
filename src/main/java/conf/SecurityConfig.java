@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @PropertySource("classpath:/application.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${jwt.signing.key}")
     private String jwtKey;
 
     @Override
