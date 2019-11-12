@@ -1,22 +1,20 @@
-package security;
+package conf.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import security.handlers.ApiAuthFailureHandler;
-import security.handlers.ApiAuthSuccessHandler;
+import conf.security.handlers.ApiAuthFailureHandler;
+import conf.security.handlers.ApiAuthSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ApiAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    public ApiAuthenticationFilter(AuthenticationManager authenticationManager,
-                                   String url) {
+    public ApiAuthenticationFilter(AuthenticationManager authenticationManager, String url) {
         super(url);
 
         setAuthenticationManager(authenticationManager);

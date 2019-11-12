@@ -1,15 +1,15 @@
-package security.jwt;
+package conf.security.jwt;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import security.ApiAuthenticationFilter;
-import security.TokenInfo;
+import conf.security.ApiAuthenticationFilter;
+import conf.security.TokenInfo;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends ApiAuthenticationFilter {
@@ -31,11 +31,11 @@ public class JwtAuthenticationFilter extends ApiAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain, Authentication authResult) {
 
-        var user = (User) authResult.getPrincipal();
+        User user = (User) authResult.getPrincipal();
 
-        var roles = user.getAuthorities()
+        List<String> roles = user.getAuthorities()
                 .stream()
-                .map(GrantedAuthority::getAuthority)
+                .map(role -> role.getAuthority())
                 .collect(Collectors.toList());
 
         String token = new JwtHelper(jwtKey)

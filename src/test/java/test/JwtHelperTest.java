@@ -3,8 +3,8 @@ package test;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.junit.Test;
-import security.jwt.JwtHelper;
-import security.TokenInfo;
+import conf.security.jwt.JwtHelper;
+import conf.security.TokenInfo;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -46,7 +46,6 @@ public class UserController {
     }
 
     @GetMapping("/api/users/{userName}")
-    @PreAuthorize("#userName == authentication.name")
     public User getUserByName(@PathVariable String userName) {
         return new UserDao().getUserByUserName(userName);
     }

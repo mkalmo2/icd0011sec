@@ -1,10 +1,10 @@
-package security.jwt;
+package conf.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import security.TokenInfo;
+import conf.security.TokenInfo;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
