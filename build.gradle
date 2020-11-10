@@ -1,6 +1,6 @@
 plugins {
     id 'war'
-    id 'org.gretty' version '2.3.1'
+    id 'org.gretty' version '3.0.3'
 }
 
 repositories {
@@ -9,48 +9,49 @@ repositories {
 
 sourceCompatibility = 11
 
-def springVersion = '5.2.1.RELEASE'
-def jacksonVersion = '2.10.0'
+def springVersion = '5.3.0'
+def springSecurityVersion = '5.4.1'
+def jacksonVersion = '2.11.3'
 def log4jVersion = '2.12.1'
-def lombokVersion = '1.18.10'
-def jsonWebTokenVersion = '0.10.7'
+def lombokVersion = '1.18.12'
+def jsonWebTokenVersion = '0.11.2'
 def junitVersion = '4.12'
 
 dependencies {
 
-    compile group: 'org.springframework',
+    implementation group: 'org.springframework',
             name: 'spring-webmvc',
             version: springVersion
 
-    compile group: 'org.springframework.security',
+    implementation group: 'org.springframework.security',
             name: 'spring-security-web',
-            version: springVersion
+            version: springSecurityVersion
 
-    compile group: 'org.springframework.security',
+    implementation group: 'org.springframework.security',
             name: 'spring-security-config',
-            version: springVersion
+            version: springSecurityVersion
 
-    compile group: 'com.fasterxml.jackson.core',
+    implementation group: 'com.fasterxml.jackson.core',
             name: 'jackson-databind',
             version: jacksonVersion
 
-    compile group: 'org.apache.logging.log4j',
+    implementation group: 'org.apache.logging.log4j',
             name: 'log4j-api',
             version: log4jVersion
 
-    compile group: 'org.apache.logging.log4j',
+    implementation group: 'org.apache.logging.log4j',
             name: 'log4j-core',
             version: log4jVersion
 
-    compile group: 'io.jsonwebtoken',
+    implementation group: 'io.jsonwebtoken',
             name: 'jjwt-api',
             version: jsonWebTokenVersion
 
-    runtime group: 'io.jsonwebtoken',
+    implementation group: 'io.jsonwebtoken',
             name: 'jjwt-impl',
             version: jsonWebTokenVersion
 
-    runtime group: 'io.jsonwebtoken',
+    implementation group: 'io.jsonwebtoken',
             name: 'jjwt-jackson',
             version: jsonWebTokenVersion
 
@@ -62,15 +63,15 @@ dependencies {
             name: 'lombok',
             version: lombokVersion
 
-    testCompile group: 'org.springframework',
+    testImplementation group: 'org.springframework',
             name: 'spring-test',
             version: springVersion
 
-    testCompile group: 'org.springframework.security',
+    testImplementation group: 'org.springframework.security',
             name: 'spring-security-test',
-            version: springVersion
+            version: springSecurityVersion
 
-    testCompile group: 'junit',
+    testImplementation group: 'junit',
             name: 'junit',
             version: junitVersion
 
@@ -78,5 +79,4 @@ dependencies {
 
 gretty {
     contextPath = '/'
-    servletContainer = 'jetty9.4'
 }
