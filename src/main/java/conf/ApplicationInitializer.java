@@ -12,7 +12,7 @@ public class ApplicationInitializer extends
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { MvcConfig.class };
+        return new Class[] { MvcConfig.class, ThymeleafConfig.class };
     }
 
     @Override

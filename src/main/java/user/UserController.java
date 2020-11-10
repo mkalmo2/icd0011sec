@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -37,7 +38,9 @@ public class UserController {
 
     @GetMapping("/api/info")
     public String info(Principal principal) {
-        return "Current user: " + principal.getName();
+        String user = principal != null ? principal.getName() : "";
+
+        return "Current user: " + user;
     }
 
     @GetMapping("/api/admin/info")

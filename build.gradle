@@ -55,6 +55,14 @@ dependencies {
             name: 'jjwt-jackson',
             version: jsonWebTokenVersion
 
+    implementation group: 'org.thymeleaf',
+            name: 'thymeleaf',
+            version: '3.0.11.RELEASE'
+
+    implementation group: 'org.thymeleaf',
+            name: 'thymeleaf-spring5',
+            version: '3.0.11.RELEASE'
+
     compileOnly group: 'org.projectlombok',
             name: 'lombok',
             version: lombokVersion
