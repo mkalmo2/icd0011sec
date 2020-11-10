@@ -29,8 +29,12 @@ import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfig
 @ContextConfiguration(classes = { MvcConfig.class, SecurityConfig.class })
 public class SecurityIntegrationTest {
 
-    @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    public void setWac(WebApplicationContext wac) {
+        this.wac = wac;
+    }
 
     private MockMvc mvc;
 
