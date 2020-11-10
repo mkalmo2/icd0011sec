@@ -36,8 +36,9 @@ public class JwtHelper {
 
         token = token.replace("Bearer ", "");
 
-        Claims body = Jwts.parser()
+        Claims body = Jwts.parserBuilder()
                 .setSigningKey(key.getBytes())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
