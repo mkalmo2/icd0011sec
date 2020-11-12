@@ -24,6 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { MvcConfig.class, SecurityConfig.class })
@@ -147,6 +150,8 @@ public class SecurityIntegrationTest {
         MvcResult mvcResult = mvc.perform(post("/api/login")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus(), is(200));
 
         var jwtToken = mvcResult.getResponse().getHeader("Authorization");
 
