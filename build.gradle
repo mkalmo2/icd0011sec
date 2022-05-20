@@ -9,12 +9,12 @@ repositories {
 
 sourceCompatibility = 17
 
-def springVersion = '5.3.19'
-def springSecurityVersion = '5.6.2'
-def jacksonVersion = '2.13.2.1'
-def log4jVersion = '2.17.1'
-def lombokVersion = '1.18.22'
-def jsonWebTokenVersion = '0.11.2'
+def springVersion = '5.3.20'
+def springSecurityVersion = '5.6.3'
+def jacksonVersion = '2.13.3'
+def log4jVersion = '2.17.2'
+def lombokVersion = '1.18.24'
+def jsonWebTokenVersion = '0.11.5'
 def thymeleafVersion = '3.0.15.RELEASE'
 def junitVersion = '4.13.2'
 
