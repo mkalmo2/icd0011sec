@@ -1,4 +1,4 @@
-package conf.security;
+package conf.security.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TokenInfo {
 
-    private String userName;
-    private List<String> roles;
+    String userName;
+    List<String> roles;
 
     public TokenInfo(String userName, String roles) {
         this.userName = userName;

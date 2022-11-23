@@ -1,4 +1,4 @@
-package conf.security;
+package conf.security.api;
 
 import lombok.Data;
 

@@ -1,26 +1,23 @@
 package conf.security.jwt;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import conf.security.TokenInfo;
+import conf.security.api.TokenInfo;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
-import java.util.stream.Collectors;
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private String jwtKey;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, String jwtKey) {
-        super(authenticationManager);
-
+    public JwtAuthorizationFilter(String jwtKey) {
         this.jwtKey = jwtKey;
     }
 
@@ -39,8 +36,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         TokenInfo tokenInfo = new JwtHelper(jwtKey).decode(tokenString);
 
         var authorities = tokenInfo.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role))
-                .collect(Collectors.toList());
+                .map(SimpleGrantedAuthority::new)
+                .toList();
 
         var springToken = new UsernamePasswordAuthenticationToken(
                 tokenInfo.getUserName(), null, authorities);

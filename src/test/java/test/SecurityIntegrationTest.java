@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,6 +60,9 @@ public class SecurityIntegrationTest {
     public void apiHomeDoesNotNeedAuthentication() throws Exception {
         mvc.perform(get("/api/home"))
                 .andExpect(status().isOk());
+
+        mvc.perform(get("/api/info"))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -161,6 +164,5 @@ public class SecurityIntegrationTest {
         mvc.perform(get("/api/info")
                 .header("Authorization", jwtToken))
                 .andExpect(status().isOk());
-
     }
 }

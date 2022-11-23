@@ -1,24 +1,28 @@
 plugins {
     id 'war'
-    id 'org.gretty' version '3.0.6'
+    id 'org.gretty' version '4.0.3'
 }
 
 repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/milestone/" }
 }
 
 sourceCompatibility = 17
 
-def springVersion = '5.3.20'
-def springSecurityVersion = '5.6.3'
-def jacksonVersion = '2.13.3'
-def log4jVersion = '2.17.2'
+def springVersion = '6.0.0-RC2'
+def springSecurityVersion = '6.0.0-RC2'
+def jacksonVersion = '2.14.0'
+def log4jVersion = '2.19.0'
 def lombokVersion = '1.18.24'
 def jsonWebTokenVersion = '0.11.5'
-def thymeleafVersion = '3.0.15.RELEASE'
 def junitVersion = '4.13.2'
 
 dependencies {
+
+    compileOnly group: 'jakarta.servlet',
+            name: 'jakarta.servlet-api',
+            version: '6.0.0'
 
     implementation group: 'org.springframework',
             name: 'spring-webmvc',
@@ -56,14 +60,6 @@ dependencies {
             name: 'jjwt-jackson',
             version: jsonWebTokenVersion
 
-    implementation group: 'org.thymeleaf',
-            name: 'thymeleaf',
-            version: thymeleafVersion
-
-    implementation group: 'org.thymeleaf',
-            name: 'thymeleaf-spring5',
-            version: thymeleafVersion
-
     compileOnly group: 'org.projectlombok',
             name: 'lombok',
             version: lombokVersion
@@ -71,6 +67,10 @@ dependencies {
     annotationProcessor group: 'org.projectlombok',
             name: 'lombok',
             version: lombokVersion
+
+    testImplementation group: 'jakarta.servlet',
+            name: 'jakarta.servlet-api',
+            version: '6.0.0'
 
     testImplementation group: 'org.springframework',
             name: 'spring-test',
