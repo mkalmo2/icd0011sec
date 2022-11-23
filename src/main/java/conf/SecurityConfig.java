@@ -47,24 +47,20 @@ public class SecurityConfig {
 //        http.formLogin();
 
         http.csrf().disable();
-        http.logout().logoutUrl("/api/logout");
 
         http.authorizeHttpRequests()
-                .requestMatchers("/api/home").permitAll();
-        http.authorizeHttpRequests()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN");
-        http.authorizeHttpRequests()
-                .requestMatchers("/api/**").authenticated();
-        http.authorizeHttpRequests()
+                .requestMatchers("/api/home").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/**").authenticated()
                 .requestMatchers("/**").permitAll();
 
         http.exceptionHandling()
-                .authenticationEntryPoint(new ApiEntryPoint());
-
-        http.exceptionHandling()
+                .authenticationEntryPoint(new ApiEntryPoint())
                 .accessDeniedHandler(new ApiAccessDeniedHandler());
 
-        http.logout().logoutSuccessHandler(new ApiLogoutSuccessHandler());
+        http.logout()
+                .logoutSuccessHandler(new ApiLogoutSuccessHandler())
+                .logoutUrl("/api/logout");
 
         http.apply(new FilterConfigurer());
 
