@@ -1,7 +1,7 @@
 package test;
 
 import conf.MvcConfig;
-import conf.SecurityConfig;
+import conf.security.SecurityConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

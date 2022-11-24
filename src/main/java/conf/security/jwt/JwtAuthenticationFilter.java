@@ -4,8 +4,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import conf.security.api.ApiAuthenticationFilter;
-import conf.security.api.TokenInfo;
+import conf.security.ApiAuthenticationFilter;
+import conf.security.TokenInfo;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,11 +41,5 @@ public class JwtAuthenticationFilter extends ApiAuthenticationFilter {
                 .encode(new TokenInfo(user.getUsername(), roles));
 
         response.addHeader("Authorization", "Bearer " + token);
-    }
-
-    @Override
-    protected void saveToSession(HttpServletRequest request,
-                                 Authentication authentication) {
-        // do not save anything
     }
 }

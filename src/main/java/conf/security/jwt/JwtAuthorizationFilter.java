@@ -3,7 +3,7 @@ package conf.security.jwt;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import conf.security.api.TokenInfo;
+import conf.security.TokenInfo;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

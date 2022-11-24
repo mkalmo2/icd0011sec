@@ -7,8 +7,12 @@
         </Console>
     </Appenders>
     <Loggers>
+
         <Root level="warn">
             <AppenderRef ref="Console"/>
         </Root>
+
+        <Logger name="util.SessionListener" level="warn"/>
+
     </Loggers>
 </Configuration>

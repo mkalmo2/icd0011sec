@@ -5,13 +5,12 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/milestone/" }
 }
 
 sourceCompatibility = 17
 
-def springVersion = '6.0.0-RC2'
-def springSecurityVersion = '6.0.0-RC2'
+def springVersion = '6.0.0'
+def springSecurityVersion = '6.0.0'
 def jacksonVersion = '2.14.0'
 def log4jVersion = '2.19.0'
 def lombokVersion = '1.18.24'

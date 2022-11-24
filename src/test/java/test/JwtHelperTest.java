@@ -4,7 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.junit.Test;
 import conf.security.jwt.JwtHelper;
-import conf.security.api.TokenInfo;
+import conf.security.TokenInfo;
 
 import java.time.LocalDateTime;
 import java.util.List;

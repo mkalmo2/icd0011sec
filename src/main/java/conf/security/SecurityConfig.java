@@ -1,13 +1,10 @@
-package conf;
+package conf.security;
 
 import conf.security.handlers.ApiAccessDeniedHandler;
 import conf.security.handlers.ApiEntryPoint;
 import conf.security.handlers.ApiLogoutSuccessHandler;
-import conf.security.jwt.JwtAuthenticationFilter;
-import conf.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,16 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @PropertySource("classpath:/application.properties")
 public class SecurityConfig {
-
-    public final static String AUTHENTICATION_INFO_KEY = "AUTHENTICATION_INFO_KEY";
 
     @Value("${jwt.signing.key}")
     private String jwtKey;
@@ -41,8 +33,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(
             HttpSecurity http) throws Exception {
 
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        http.sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 //        http.formLogin();
 
@@ -89,35 +81,34 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.debug(false);
-    }
-
     public class FilterConfigurer extends AbstractHttpConfigurer<FilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity http) {
             AuthenticationManager manager = http.getSharedObject(AuthenticationManager.class);
 
-//            var loginFilter = new ApiAuthenticationFilter(
-//                manager, "/api/login");
-//
-//            http.addFilterBefore(loginFilter,
-//                    UsernamePasswordAuthenticationFilter.class);
-//
+            var loginFilter = new ApiAuthenticationFilter(
+                manager, "/api/login");
+
+            http.addFilterBefore(loginFilter,
+                    UsernamePasswordAuthenticationFilter.class);
+
 //            var authorizationFilter = new ApiAuthorizationFilter();
 //
 //            http.addFilterBefore(authorizationFilter, AuthorizationFilter.class);
 
-            var loginFilter = new JwtAuthenticationFilter(
-                manager, "/api/login", jwtKey);
-
-            http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
-
-            var authorizationFilter = new JwtAuthorizationFilter(jwtKey);
-
-            http.addFilterBefore(authorizationFilter, AuthorizationFilter.class);
+//            var loginFilter = new JwtAuthenticationFilter(
+//                manager, "/api/login", jwtKey);
+//
+//            http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//            var authorizationFilter = new JwtAuthorizationFilter(jwtKey);
+//
+//            http.addFilterBefore(authorizationFilter, AuthorizationFilter.class);
         }
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.debug(false);
+    }
 }
