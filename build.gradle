@@ -35,6 +35,14 @@ dependencies {
             name: 'spring-security-config',
             version: springSecurityVersion
 
+    implementation group: 'org.springframework.security',
+            name: 'spring-security-oauth2-client',
+            version: springSecurityVersion
+
+    implementation group: 'org.springframework.security',
+            name: 'spring-security-oauth2-jose',
+            version: springSecurityVersion
+
     implementation group: 'com.fasterxml.jackson.core',
             name: 'jackson-databind',
             version: jacksonVersion
