@@ -1,20 +1,22 @@
 plugins {
     id 'war'
-    id 'org.gretty' version '4.0.3'
+    id 'org.gretty' version '4.1.1'
 }
 
 repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
-def springVersion = '6.0.0'
-def springSecurityVersion = '6.0.0'
-def jacksonVersion = '2.14.0'
-def log4jVersion = '2.19.0'
-def lombokVersion = '1.18.24'
-def jsonWebTokenVersion = '0.11.5'
+def springVersion = '6.0.13'
+def springSecurityVersion = '6.1.5'
+def jacksonVersion = '2.15.1'
+def log4jVersion = '2.21.1'
+def lombokVersion = '1.18.30'
+def jsonWebTokenVersion = '0.12.3'
 def junitVersion = '4.13.2'
 
 dependencies {

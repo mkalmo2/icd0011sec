@@ -2,20 +2,20 @@ package conf.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import conf.security.TokenInfo;
 
+import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 public class JwtHelper {
 
-    private String key;
+    private final SecretKey key;
 
     public JwtHelper(String key) {
-        this.key = key;
+        this.key = Keys.hmacShaKeyFor(key.getBytes());
     }
 
     public String encode(TokenInfo tokenInfo) {
@@ -24,9 +24,9 @@ public class JwtHelper {
 
     public String encode(TokenInfo tokenInfo, LocalDateTime expiration) {
         return Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(key.getBytes()), SignatureAlgorithm.HS512)
-                .setSubject(tokenInfo.getUserName())
-                .setExpiration(asDate(expiration))
+                .signWith(key, Jwts.SIG.HS512)
+                .subject(tokenInfo.getUserName())
+                .expiration(asDate(expiration))
                 .claim("roles", tokenInfo.getRolesAsString())
                 .compact();
 
@@ -36,11 +36,11 @@ public class JwtHelper {
 
         token = token.replace("Bearer ", "");
 
-        Claims body = Jwts.parserBuilder()
-                .setSigningKey(key.getBytes())
+        Claims body = Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
 
         return new TokenInfo(
                 body.getSubject(),

@@ -8,7 +8,8 @@ public class ApplicationInitializer extends
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { MvcConfig.class, SecurityConfig.class };
+        return new Class[] { MvcConfig.class,
+                             SecurityConfig.class };
     }
 
     @Override
