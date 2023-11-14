@@ -52,22 +52,22 @@ public class SecurityIntegrationTest {
 
     @Test
     public void apiUrlsNeedAuthentication() throws Exception {
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     public void apiHomeDoesNotNeedAuthentication() throws Exception {
-        mvc.perform(get("/api/home"))
+        mvc.perform(get("/home"))
                 .andExpect(status().isOk());
 
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     public void redirectsToLoginForm() throws Exception {
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -85,30 +85,30 @@ public class SecurityIntegrationTest {
 
     @Test
     public void adminCanSeeMoreInfo() throws Exception {
-        mvc.perform(get("/api/admin/info").with(user("user").roles("USER")))
+        mvc.perform(get("/admin/info").with(user("user").roles("USER")))
                 .andExpect(status().isForbidden());
 
-        mvc.perform(get("/api/admin/info").with(user("admin").roles("ADMIN")))
+        mvc.perform(get("/admin/info").with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void canLogOut() throws Exception {
-        mvc.perform(get("/api/info").with(user("user").roles("USER")))
+        mvc.perform(get("/info").with(user("user").roles("USER")))
                 .andExpect(status().isOk());
 
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isOk());
 
         mvc.perform(logout("/api/logout"));
 
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().is3xxRedirection());
     }
 
     @Test
     public void doesNotShowLoginForm() throws Exception {
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -120,7 +120,7 @@ public class SecurityIntegrationTest {
 
     @Test
     public void canLoginWithJsonRequest() throws Exception {
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isUnauthorized());
 
         mvc.perform(post("/api/login")
@@ -133,16 +133,16 @@ public class SecurityIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
 
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void userCanSeeOnlyOwnInfo() throws Exception {
-        mvc.perform(get("/api/users/user").with(user("user").roles("USER")))
+        mvc.perform(get("/users/user").with(user("user").roles("USER")))
                 .andExpect(status().isOk());
 
-        mvc.perform(get("/api/users/alice").with(user("user").roles("USER")))
+        mvc.perform(get("/users/alice").with(user("user").roles("USER")))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -158,10 +158,10 @@ public class SecurityIntegrationTest {
 
         var jwtToken = mvcResult.getResponse().getHeader("Authorization");
 
-        mvc.perform(get("/api/info"))
+        mvc.perform(get("/info"))
                 .andExpect(status().isUnauthorized());
 
-        mvc.perform(get("/api/info")
+        mvc.perform(get("/info")
                 .header("Authorization", jwtToken))
                 .andExpect(status().isOk());
     }

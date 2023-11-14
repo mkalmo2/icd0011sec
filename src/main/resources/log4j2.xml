@@ -12,7 +12,11 @@
             <AppenderRef ref="Console"/>
         </Root>
 
-        <Logger name="util.SessionListener" level="warn"/>
+        <Logger name="util.SessionListener"
+                level="warn"/>
+
+        <Logger name="org.springframework.core.LocalVariableTableParameterNameDiscoverer"
+                level="error"/>
 
     </Loggers>
 </Configuration>
