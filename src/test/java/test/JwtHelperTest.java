@@ -14,7 +14,7 @@ import static org.hamcrest.core.Is.is;
 
 public class JwtHelperTest {
 
-    private JwtHelper jwt = new JwtHelper(
+    private final JwtHelper jwt = new JwtHelper(
             "****************** random key ******************" +
             "kr6m4GNX6voKiPh3pfCaWkQoG8d1E756i6m4GNX6voKiP2hp");
 
@@ -27,7 +27,7 @@ public class JwtHelperTest {
 
         var decoded = jwt.decode(tokenAsString);
 
-        assertThat(decoded.getUserName(), is(tokenInfo.getUserName()));
+        assertThat(decoded.getUsername(), is(tokenInfo.getUsername()));
         assertThat(decoded.getRoles(), is(tokenInfo.getRoles()));
     }
 

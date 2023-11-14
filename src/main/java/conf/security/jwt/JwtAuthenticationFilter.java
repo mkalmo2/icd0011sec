@@ -14,7 +14,7 @@ import java.util.List;
 
 public class JwtAuthenticationFilter extends ApiAuthenticationFilter {
 
-    private String jwtKey;
+    private final String jwtKey;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
                                    String url, String jwtKey) {

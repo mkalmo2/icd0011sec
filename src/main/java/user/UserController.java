@@ -1,11 +1,10 @@
 package user;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpSession;
 import java.security.Principal;
 
 @RestController
@@ -48,7 +47,6 @@ public class UserController {
     }
 
     @GetMapping("/users/{username}")
-    @PreAuthorize("#username == authentication.name")
     public User getUserByName(@PathVariable String username) {
         return new UserDao().getUserByUserName(username);
     }

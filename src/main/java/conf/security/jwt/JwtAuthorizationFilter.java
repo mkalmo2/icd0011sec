@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private String jwtKey;
+    private final String jwtKey;
 
     public JwtAuthorizationFilter(String jwtKey) {
         this.jwtKey = jwtKey;
@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 .toList();
 
         var springToken = new UsernamePasswordAuthenticationToken(
-                tokenInfo.getUserName(), null, authorities);
+                tokenInfo.getUsername(), null, authorities);
 
         SecurityContextHolder.getContext().setAuthentication(springToken);
 

@@ -25,7 +25,7 @@ public class JwtHelper {
     public String encode(TokenInfo tokenInfo, LocalDateTime expiration) {
         return Jwts.builder()
                 .signWith(key, Jwts.SIG.HS512)
-                .subject(tokenInfo.getUserName())
+                .subject(tokenInfo.getUsername())
                 .expiration(asDate(expiration))
                 .claim("roles", tokenInfo.getRolesAsString())
                 .compact();
