@@ -127,7 +127,7 @@ public class SecurityIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON).content("bad_data"))
                 .andExpect(status().isUnauthorized());
 
-        String json = "{ \"userName\": \"user\", \"password\": \"123\" }";
+        String json = "{ \"username\": \"user\", \"password\": \"123\" }";
 
         mvc.perform(post("/api/login")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
@@ -148,7 +148,7 @@ public class SecurityIntegrationTest {
 
     @Test
     public void canAccessWithJwtToken() throws Exception {
-        String json = "{ \"userName\": \"user\", \"password\": \"123\" }";
+        String json = "{ \"username\": \"user\", \"password\": \"123\" }";
 
         MvcResult mvcResult = mvc.perform(post("/api/login")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
