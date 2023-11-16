@@ -20,8 +20,8 @@ public class UserController {
 
         Object count = session.getAttribute("count");
 
-        count = count instanceof Integer
-                ? (Integer) count + 1
+        count = count instanceof Integer i
+                ? i + 1
                 : 0;
 
         session.setAttribute("count", count);
