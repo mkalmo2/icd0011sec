@@ -21,9 +21,14 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @PropertySource("classpath:/application.properties")
 public class SecurityConfig {
 
+    private final MvcRequestMatcher.Builder mvc;
+
+    public SecurityConfig(HandlerMappingIntrospector introspector) {
+        this.mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/api");
+    }
+
     @Bean
-    public SecurityFilterChain filterChain(
-            HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.apply(new FilterConfigurer());
 
@@ -56,11 +61,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
-    }
-
-    @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -68,5 +68,9 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.debug(false);
+    }
+
+    private MvcRequestMatcher mvcMatcher(String pattern) {
+        return mvc.pattern(pattern);
     }
 }
