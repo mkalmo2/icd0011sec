@@ -24,7 +24,7 @@ public class SecurityConfig {
     private final MvcRequestMatcher.Builder mvc;
 
     public SecurityConfig(HandlerMappingIntrospector introspector) {
-        this.mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/api");
+        this.mvc = new MvcRequestMatcher.Builder(introspector);
     }
 
     @Bean
