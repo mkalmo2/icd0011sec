@@ -3,6 +3,7 @@ package conf.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -30,12 +31,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.apply(new FilterConfigurer());
+        http.with(new FilterConfigurer(), Customizer.withDefaults());
 
         return http.build();
     }
 
-    public class FilterConfigurer extends AbstractHttpConfigurer<FilterConfigurer, HttpSecurity> {
+    public static class FilterConfigurer extends AbstractHttpConfigurer<FilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity http) {
             AuthenticationManager manager = http.getSharedObject(AuthenticationManager.class);
