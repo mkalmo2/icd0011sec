@@ -2,15 +2,16 @@ package test;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
-import org.junit.Test;
 import conf.security.jwt.JwtHelper;
 import conf.security.TokenInfo;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JwtHelperTest {
 
@@ -31,22 +32,25 @@ public class JwtHelperTest {
         assertThat(decoded.getRoles(), is(tokenInfo.getRoles()));
     }
 
-    @Test(expected = ExpiredJwtException.class)
+    @Test
     public void failsOnExpiredToken() {
 
         String tokenAsString = jwt.encode(
                 new TokenInfo("user", ""), LocalDateTime.now().minusMinutes(1));
 
-        jwt.decode(tokenAsString);
+        assertThrows(
+                ExpiredJwtException.class,
+                () -> jwt.decode(tokenAsString));
     }
 
-    @Test(expected = SignatureException.class)
+    @Test
     public void canNotTamperData() {
 
-        String tokenAsString = jwt.encode(new TokenInfo("user", ""));
+        String tokenAsString = jwt.encode(new TokenInfo("user", ""))
+                .replaceFirst("\\.[^0]", ".0");
 
-        tokenAsString = tokenAsString.replaceFirst("\\.[^0]", ".0");
-
-        jwt.decode(tokenAsString);
+        assertThrows(
+                SignatureException.class,
+                () -> jwt.decode(tokenAsString));
     }
 }

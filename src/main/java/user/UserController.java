@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{username}")
-    public User getUserByName(@PathVariable String username) {
+    public User getUserByName(@PathVariable("username") String username) {
         return new UserDao().getUserByUserName(username);
     }
 }
