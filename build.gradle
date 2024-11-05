@@ -13,6 +13,7 @@ java {
 
 compileJava {
     options.compilerArgs << '-parameters'
+    // options.compilerArgs << '-g:none'
 }
 
 def springVersion = '6.1.14'
