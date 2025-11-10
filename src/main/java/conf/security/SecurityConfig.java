@@ -15,21 +15,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+
+import static org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.withDefaults;
 
 @EnableWebSecurity
 @PropertySource("classpath:/application.properties")
 public class SecurityConfig {
 
-    private final MvcRequestMatcher.Builder mvc;
-
-    public SecurityConfig(HandlerMappingIntrospector introspector) {
-        this.mvc = new MvcRequestMatcher.Builder(introspector);
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        PathPatternRequestMatcher.Builder mvc = withDefaults().basePath("/");
 
         http.with(new FilterConfigurer(), Customizer.withDefaults());
 
@@ -69,9 +65,5 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.debug(false);
-    }
-
-    private MvcRequestMatcher mvcMatcher(String pattern) {
-        return mvc.pattern(pattern);
     }
 }
