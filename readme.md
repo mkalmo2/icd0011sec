@@ -27,8 +27,8 @@ Spring Security
 
     ```
     http.authorizeHttpRequests(conf -> conf
-                .requestMatchers(mvc.matcher("/home")).permitAll()
-                .requestMatchers(mvc.matcher("/**")).authenticated()
+                .requestMatchers(mvc.matcher("/api/home")).permitAll()
+                .requestMatchers(mvc.matcher("/api/**")).authenticated()
         );
     ```
    
@@ -42,7 +42,7 @@ Spring Security
    puudub. Selleks lisage konfiguratsiooni:
 
    ```
-       http.formLogin(withDefaults());
+   http.formLogin(Customizer.withDefaults());
    ```
    
    Kontrollige, et aadressile /api/info minnes saate koodi 302 ja teid 
@@ -86,7 +86,7 @@ Spring Security
    kasutaja kellel on "ADMIN" roll.
 
    ```
-      .requestMatchers(mvc.matcher("/admin/**")).hasRole("ADMIN")
+   .requestMatchers("/admin/**").hasRole("ADMIN")
    ```
    
    Kontrollige, et sisse logides ei näe kasutaja infot aadressilt /api/admin/info
@@ -106,7 +106,7 @@ Spring Security
    Et vorm poleks parooliga kaitstud lisage erand:
    
    ```
-   .requestMatchers(mvc.matcher("/static/**")).permitAll()
+   .requestMatchers("/static/**").permitAll()
    ```
    
    Vormi postitamisel on automaatne CSRF kaitse. Lülitage see välja

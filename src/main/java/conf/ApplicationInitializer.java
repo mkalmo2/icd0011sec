@@ -1,6 +1,7 @@
 package conf;
 
 import conf.security.SecurityConfig;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class ApplicationInitializer extends
@@ -17,8 +18,9 @@ public class ApplicationInitializer extends
         return new Class[] {};
     }
 
+    @NonNull
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/api/*" };
+        return new String[] { "/*" };
     }
 }
