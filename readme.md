@@ -15,7 +15,7 @@ Spring Security
    vajavad autentimist. Selleks lisage konfiguratsiooni:
    ```
      http.authorizeHttpRequests(conf -> conf
-            .requestMatchers(mvc.matcher("/**")).authenticated());
+            .requestMatchers("/**").authenticated());
    ```
    
    Kontrollige, et päring aadressile /api/home tagastab koodi 403.
@@ -27,8 +27,8 @@ Spring Security
 
     ```
     http.authorizeHttpRequests(conf -> conf
-                .requestMatchers(mvc.matcher("/api/home")).permitAll()
-                .requestMatchers(mvc.matcher("/api/**")).authenticated()
+                .requestMatchers("/api/home").permitAll()
+                .requestMatchers("/api/**").authenticated()
         );
     ```
    
