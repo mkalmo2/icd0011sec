@@ -2,21 +2,22 @@ Spring Security
 
 1. Uurige sessiooniga rakenduse käitumist:
 
-   a) käivitage rakendus;
-   b) avage Chrome brauser ja selle arendaja tööriistade (F12) alt Network sakk;
-   c) laadige aadress http://localhost:8080/ veenduge, et küpsist ei seata;
-   d) laadige aadress http://localhost:8080/api/count veenduge, et küpsis seatakse;
-   e) värskendage lehte ja veenduge, et seatud küpsis saadetakse koos päringuga;
-   f) kustutage küpsis. Chrome brauseris aadressiriba ees olevale hüüumärgile
-      klikates avaneb vastav võimalus;
-   g) värskendage lehte ja veenduge, et küpsist ei saadeta ja samas seatakse uus küpsis.
+   a) käivitage rakendus;<br>
+   b) avage Chrome brauser ja selle arendaja tööriistade (F12) alt Network sakk;<br>
+   c) laadige aadress http://localhost:8080/ veenduge, et küpsist ei seata;<br>
+   d) laadige aadress http://localhost:8080/api/count veenduge, et küpsis seatakse;<br>
+   e) värskendage lehte ja veenduge, et seatud küpsis saadetakse koos päringuga;<br>
+   f) kustutage küpsis. Chrome brauseris aadressiriba ees olevale hüüumärgile<br>
+      klikates avaneb vastav võimalus;<br>
+   g) värskendage lehte ja veenduge, et küpsist ei saadeta ja samas seatakse uus küpsis.<br><br>
 
 2. Tehke nii, et päringud Springi controlleritele (nt. http://localhost:8080/api/home) 
    vajavad autentimist. Selleks lisage konfiguratsiooni:
-
+   ```
      http.authorizeHttpRequests(conf -> conf
             .requestMatchers(mvc.matcher("/**")).authenticated());
-
+   ```
+   
    Kontrollige, et päring aadressile /api/home tagastab koodi 403.
 
    Kontrollige, et test apiUrlsNeedAuthentication()
@@ -24,11 +25,13 @@ Spring Security
 
 3. Lisage erand aadressi /api/home kohta
 
+    ```
     http.authorizeHttpRequests(conf -> conf
                 .requestMatchers(mvc.matcher("/home")).permitAll()
                 .requestMatchers(mvc.matcher("/**")).authenticated()
         );
-
+    ```
+   
    NB! Erand peab olema enne üldist reeglit.
 
    Kontrollige, et erand toimib (päring õnnestub).
@@ -38,7 +41,9 @@ Spring Security
 4. Tehke nii, et rakendus näitaks sisselogimise vormi, kui ligipääs 
    puudub. Selleks lisage konfiguratsiooni:
 
+   ```
        http.formLogin(withDefaults());
+   ```
    
    Kontrollige, et aadressile /api/info minnes saate koodi 302 ja teid 
    suunatakse sisselogimise vormile.
@@ -50,6 +55,7 @@ Spring Security
 
    Selleks peate lisama konfiguratsiooni järgmise deklaratsiooni:
 
+   ```
    @Bean
    public UserDetailsService userDetailService() {
        UserDetails user = User.builder()
@@ -66,6 +72,7 @@ Spring Security
    
        return new InMemoryUserDetailsManager(user, admin);
    }
+   ```
    
    Räsi arvutamise näide on testide klassis test.PasswordEncoderTest.
    
@@ -77,8 +84,10 @@ Spring Security
    
 6. Lisage piirang, et aadressilt /api/admin/** olevat infot näiks ainult
    kasutaja kellel on "ADMIN" roll.
- 
+
+   ```
       .requestMatchers(mvc.matcher("/admin/**")).hasRole("ADMIN")
+   ```
    
    Kontrollige, et sisse logides ei näe kasutaja infot aadressilt /api/admin/info
    aga admin näeb.
@@ -86,19 +95,25 @@ Spring Security
    Kontrollige, et test adminCanSeeMoreInfo() läheb läbi.
    
 7. Lisage väljalogimise võimalus
+
+   ```  
+   http.logout(conf -> conf.logoutUrl("/api/logout"));
+   ```  
    
-     http.logout(conf -> conf.logoutUrl("/api/logout"));
-     
    Väljalogimiseks tuleb teha post päring aadressile "/api/logout".
    
    Toorikus on kaasas vorm (aadressil /static/form.html), mis vastava päringu teeb.
    Et vorm poleks parooliga kaitstud lisage erand:
    
-      .requestMatchers(mvc.matcher("/static/**")).permitAll()
+   ```
+   .requestMatchers(mvc.matcher("/static/**")).permitAll()
+   ```
    
    Vormi postitamisel on automaatne CSRF kaitse. Lülitage see välja
-   
-     http.csrf(AbstractHttpConfigurer::disable);
+
+   ```
+   http.csrf(AbstractHttpConfigurer::disable);
+   ```
      
    Kontrollige, et ka test canLogOut() läheb läbi.
 
@@ -107,65 +122,73 @@ api-põhisele rakendusele.
 
 8. Tehke nii, ligipääsu puudumisel ei suunata sisselogimise vormile vaid 
    tagastatakse vea kood (401).
-   
+
+   ```
       http.exceptionHandling(conf -> conf
         .authenticationEntryPoint(new ApiEntryPoint())
         .accessDeniedHandler(new ApiAccessDeniedHandler()));
+   ```
 
    Kontrollige, et test doesNotShowLoginForm() läheb läbi.
 
 9. Tehke nii, et väljalogimine ei suuna kuhugi ja tagastab koodi 200
-   
-         http.logout(conf -> conf
-            .logoutSuccessHandler(new ApiLogoutSuccessHandler())
-            .logoutUrl("/api/logout"));
+
+   ```
+      http.logout(conf -> conf
+         .logoutSuccessHandler(new ApiLogoutSuccessHandler())
+         .logoutUrl("/api/logout"));
+   ```
 
    Kontrollige, et test logOutDoesNotRedirect() läheb läbi.
    
 10. Lisage sisselogimise teenus aadressiga /api/login.
    
    Vajalik info saadetakse Json kujul
-   
-     { "username": "user", "password": "secret" }
+
+    ```     
+    { "username": "user", "password": "secret" }
+    ```
 
    Konfiguratsiooniks on vajalik lülitada välja csrf kontroll (tehtud 6. punktis)
-    
-     http.csrf(AbstractHttpConfigurer::disable);
+
+    ```
+    http.csrf(AbstractHttpConfigurer::disable);
+    ```     
    
    Lisada filter, mis reageerib aadressile "/api/login" päringule.
    Need muudatused peate tegema siseklassi FilterConfigurer configure() 
    meetodis.   
+
+   ```
+   var loginFilter = new ApiAuthenticationFilter(
+      manager, "/api/login");
+  
+   http.addFilterBefore(loginFilter,
+          UsernamePasswordAuthenticationFilter.class);
+   ```
+  
+Lisaks peate kirjutama klassi ApiAuthenticationFilter vajaliku koodi 
+(kuhu ja mida kirjutada on kommentaarides kirjas)
+
+Kui sisend ei ole oodatud info oodatud kujul, saab sellest märku anda 
+erindiga BadCredentialsException.   
+
+Kontrollige Postman-iga ja testiga canLoginWithJsonRequest().
    
-     var loginFilter = new ApiAuthenticationFilter(
-         manager, "/api/login");
-     
-     http.addFilterBefore(loginFilter,
-             UsernamePasswordAuthenticationFilter.class);
-     
-   Lisaks peate kirjutama klassi ApiAuthenticationFilter vajaliku koodi 
-   (kuhu ja mida kirjutada on kommentaarides kirjas)
-   
-   Kui sisend ei ole oodatud info oodatud kujul, saab sellest märku anda 
-   erindiga BadCredentialsException.   
-   
-   Kontrollige Postman-iga ja testiga canLoginWithJsonRequest().
-   
-11. Aadressilt /api/users/<user name> on võimalik küsida konkreetse kasutaja infot.
+11. Aadressilt /api/users/\<user name\> on võimalik küsida konkreetse kasutaja infot.
    Tehke nii, et näidatakse infot vaid sisseloginud kasutaja kohta.
    
    Nt. kui olen sisse loginud kasutajana "user" ja pöördun aadressile
    /api/users/user, siis näen vastavat infot, kui aga pöördun aadressile
    /api/users/alice, siis saan vea (http koodiga 401)
    
-   Konfiguratsiooniks on vaja
+   Konfiguratsiooniks on vaja annotatsiooni Spring-i konfiguratsiooni klassil
 
-      annotatsiooni Spring-i konfiguratsiooni klassil
+   ```@EnableMethodSecurity```
 
-        @EnableMethodSecurity
-   
-      ja annotatsiooni kontrolleri meetodil
-      
-        @PreAuthorize("#username == authentication.name")
+   ja annotatsiooni kontrolleri meetodil
+  
+   ```@PreAuthorize("#username == authentication.name")```
       
    Kontrollige Postman-iga ja testiga userCanSeeOnlyOwnInfo().
 
@@ -180,15 +203,19 @@ api-põhisele rakendusele.
    See filter vajab ka võtit krüpteerimiseks. Võti on application.properties
    failis ja selle saate Spring-i konkfiguratsiooni süstida.
    
-     @Value("${jwt.signing.key}")
-     private String jwtKey;
+   ```
+   @Value("${jwt.signing.key}")
+   private String jwtKe
+   ```
 
-   Lisaks peate lisama JwtAuthorizationFilter-i, mis päringus oleva tokenit 
-   kontrollib järgi sissepääsu otsuse teeb.
-   
-     var authorizationFilter = new JwtAuthorizationFilter(jwtKey);
-     
-     http.addFilterBefore(authorizationFilter, AuthorizationFilter.class);
+   saks peate lisama JwtAuthorizationFilter-i, mis päringus oleva tokit 
+   ntrollib järgi sissepääsu otsuse teeb.
+
+   ```     
+   var authorizationFilter = new JwtAuthorizationFilter(jwtKey);
+    
+   http.addFilterBefore(authorizationFilter, AuthorizationFilter.class);
+   ```
    
    Kontrollige Postman-iga ja testiga canAccessWithJwtToken().
 
