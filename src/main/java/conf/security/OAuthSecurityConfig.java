@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.lang.NonNull;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -33,9 +35,13 @@ public class OAuthSecurityConfig {
     public SecurityFilterChain filterChain(
             HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(httpSecurity ->
-                httpSecurity.anyRequest().authenticated())
-                .oauth2Login(withDefaults());
+        http.csrf(AbstractHttpConfigurer::disable);
+
+        PathPatternRequestMatcher.Builder mvc = PathPatternRequestMatcher.withDefaults().basePath("/");
+
+        http.authorizeHttpRequests(conf -> conf
+                .requestMatchers(mvc.matcher("/**")).authenticated()
+        ).oauth2Login(withDefaults());
 
         http.with(new FilterConfigurer(), Customizer.withDefaults());
 
@@ -75,10 +81,10 @@ public class OAuthSecurityConfig {
 
         @Override
         protected void doFilterInternal(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        FilterChain chain) throws IOException, ServletException {
+                                        @NonNull HttpServletResponse response,
+                                        @NonNull FilterChain chain) throws IOException, ServletException {
 
-            if (!"/info".equals(request.getRequestURI())) {
+            if (!"/api/info".equals(request.getRequestURI())) {
                 chain.doFilter(request, response);
                 return;
             }

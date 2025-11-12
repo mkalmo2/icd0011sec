@@ -15,7 +15,7 @@ Spring Security
    vajavad autentimist. Selleks lisage konfiguratsiooni:
    ```
      http.authorizeHttpRequests(conf -> conf
-            .requestMatchers("/**").authenticated());
+            .requestMatchers(mvc.matcher("/**")).authenticated());
    ```
    
    Kontrollige, et päring aadressile /api/home tagastab koodi 403.
@@ -27,8 +27,8 @@ Spring Security
 
     ```
     http.authorizeHttpRequests(conf -> conf
-                .requestMatchers("/api/home").permitAll()
-                .requestMatchers("/api/**").authenticated()
+                .requestMatchers(mvc.matcher("/api/home")).permitAll()
+                .requestMatchers(mvc.matcher("/api/**")).authenticated()
         );
     ```
    
@@ -86,7 +86,7 @@ Spring Security
    kasutaja kellel on "ADMIN" roll.
 
    ```
-   .requestMatchers("/admin/**").hasRole("ADMIN")
+   .requestMatchers(mvc.matcher("/admin/**")).hasRole("ADMIN")
    ```
    
    Kontrollige, et sisse logides ei näe kasutaja infot aadressilt /api/admin/info
@@ -106,7 +106,7 @@ Spring Security
    Et vorm poleks parooliga kaitstud lisage erand:
    
    ```
-   .requestMatchers("/static/**").permitAll()
+   .requestMatchers(mvc.matcher("/static/**")).permitAll()
    ```
    
    Vormi postitamisel on automaatne CSRF kaitse. Lülitage see välja
